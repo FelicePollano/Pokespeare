@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
+using Pokespeare.Common;
 
 namespace Pokespeare
 {
@@ -27,7 +27,7 @@ namespace Pokespeare
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                
+                .AddSingleton<IPokemonInfoProvider>(new PokemonInfoProvider())
                 .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

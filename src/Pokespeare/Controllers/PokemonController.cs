@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Pokespeare.Common;
 
 namespace Pokespeare.Controllers
 {
@@ -12,17 +13,19 @@ namespace Pokespeare.Controllers
     public class PokemonController : ControllerBase
     {
         readonly ILogger<PokemonController> logger;
-        public PokemonController(ILogger<PokemonController> logger)
+        readonly IPokemonInfoProvider provider;
+        public PokemonController(ILogger<PokemonController> logger,IPokemonInfoProvider provider)
         {
             this.logger = logger;
+            this.provider = provider;
         }
        
         // GET /pokemon/name
         [HttpGet("{pokemon}")]
-        public ActionResult<string> Get(string pokemon)
+        public async Task<string> Get(string pokemon)
         {
             logger.LogInformation("Retrieving Pokemon informations");
-            return "nothing";
+            return await provider.GetDescriptionAsync(pokemon);
         }
     }
 }
