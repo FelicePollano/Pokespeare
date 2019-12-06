@@ -17,5 +17,12 @@ weaker than itself.";
             var res = await provider.GetDescriptionAsync("charizard");
             Assert.AreNotEqual(-1,res.IndexOf("Charizard flies"));
         }
+        [TestMethod]
+        public async Task  TestShakespeareTranslator()
+        {
+            var translator = new ShakespeareTranslator();
+            var res = await translator.TranslateAsync(charizardReply);
+            Assert.AreNotEqual(-1,res.IndexOf("flies 'round"));
+        }
     }
 }

@@ -12,33 +12,29 @@ namespace Pokespeare.Common
         static readonly HttpClient client = new HttpClient();
         public async Task<string> GetDescriptionAsync(string name)
         {
-            try{
-                var uri = string.Format(baseUri,name);
-                var httpResponse = await client.GetAsync(uri);
+           
+            var uri = string.Format(baseUri,name);
+            var httpResponse = await client.GetAsync(uri);
 
-                if (!httpResponse.IsSuccessStatusCode)
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new RequestException(httpResponse.StatusCode,$"Http error from server:{httpResponse.StatusCode}");
+            }
+            else
+            {
+                dynamic obj = JValue.Parse(await httpResponse.Content.ReadAsStringAsync());
+                JArray entries = obj.flavor_text_entries;
+                foreach( var token in entries )
                 {
-                    throw new Exception($"Http error from server:{httpResponse.StatusCode}");
-                }
-                else
-                {
-                    dynamic obj = JValue.Parse(await httpResponse.Content.ReadAsStringAsync());
-                    JArray entries = obj.flavor_text_entries;
-                    foreach( var token in entries )
+                    dynamic d = token;
+                    if(d.language.name=="en")
                     {
-                        dynamic d = token;
-                        if(d.language.name=="en")
-                        {
-                            return d.flavor_text;
-                        }
+                        return d.flavor_text;
                     }
                 }
-                return  "";
             }
-            catch(Exception e)
-            {
-                throw new Exception("Can't download pokemon info",e);
-            }
+            return  "";
+           
         }
     }
 }
