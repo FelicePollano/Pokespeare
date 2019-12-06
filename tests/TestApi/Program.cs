@@ -11,28 +11,7 @@ namespace TestApi
         static readonly string Expected = "flies 'round"; //a not so strcit marker we have the expected Shakespeare reply...
         static async Task Main(string[] args)
         {
-            bool launch = true;
-            if( args.Length > 0 && args[0]=="--nolaunch")
-                launch = false;
             var saveColor = Console.ForegroundColor;
-            Process process = null;
-            if( launch )
-            {
-                // run the webapi app
-                process = new Process
-                {
-                    StartInfo =
-                    {
-                        FileName = "dotnet",
-                        Arguments = "run",
-                        UseShellExecute = false,
-                        WorkingDirectory = "../../src/Pokespeare"
-                    }
-                };
-                await Info("Starting web api application");
-                process.Start();
-            }
-
             try{
                 
                  
@@ -49,7 +28,10 @@ namespace TestApi
                     {
                         await Error($"reply {response} DOES NOT contain expected'{Expected}'");
                     }
-                    
+                    else
+                    {
+                        await Info("Test passed.");
+                    }
                 }
                 
             }
@@ -58,11 +40,6 @@ namespace TestApi
                 await Error($"Fatal error:{e.ToString()}");
             }
 
-            if( launch )
-            {
-                await Info("Killing web api application");
-                process.Kill();
-            }
             Console.ForegroundColor = saveColor;
         }
         static async Task  Error(string message)

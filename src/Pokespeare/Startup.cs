@@ -27,7 +27,9 @@ namespace Pokespeare
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddSingleton<IPokemonInfoProvider>(new PokemonInfoProvider())
+            
+                .AddTransient<IPokemonInfoProvider,PokemonInfoProvider>()
+                .AddTransient<IShakespeareTranslator,ShakespeareTranslator>()
                 .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
