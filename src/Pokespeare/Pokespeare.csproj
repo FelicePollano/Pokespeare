@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App">
-      <Version>2.2.1</Version>
+      <!--Version>2.2.1</Version-->
     </PackageReference>
     
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
